@@ -59,4 +59,25 @@ class DataAnalysis:
             if word not in unique_words:
                 unique_words.append(word)
         return len(unique_words)
-    
+
+    @classmethod
+    def word_frequency(cls, text):
+        '''returns a sorted (descending) dictionary, where the keys are the words and the values
+        the frequency of such words in the text'''
+        # creating a dictionary with the frequency of the words
+        frequency = {}
+        words = text.split()
+        for word in words:
+            if word in frequency.keys():
+                frequency[word] += 1
+            else:
+                frequency[word] = 1
+
+        sorted_values = sorted(frequency.values(), reverse=True)
+        sorted_frequency = {}
+        for value in sorted_values:
+            for key in frequency.keys():
+                if frequency[key] == value:
+                    sorted_frequency[key] = frequency[key]
+
+        return sorted_frequency
