@@ -7,7 +7,6 @@ class FileReader:
     @classmethod
     def read_file(cls, file_name):
         '''Returns a string with the content of the file specified'''
-
         file = open(file_name, encoding="utf-8")
         text = file.read()
         file.close()
