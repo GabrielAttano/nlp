@@ -71,13 +71,27 @@ def summarize_dataset(dataset):
         # summaries_dictionary[column + "_mean_value"] = mean(dataset[column].tolist())
         # summaries_dictionary[column + "_stdev"] = standard_deviation(dataset[column].tolist())
         summaries.append(get_dict(mean(dataset[column].tolist()), standard_deviation(dataset[column].tolist()), column))
-
+    summaries.append({'amount_analyzed':len(dataset.index)})
     return summaries
 
 # Calculate the Gaussian probability distribution function for x
 def calculate_probability(x, mean, stdev):
     exponent = exp(-((x-mean)**2 / (2 * stdev**2 )))
     return (1 / (sqrt(2 * pi) * stdev)) * exponent
+
+# Calculate the probabilities of predicting each class for a given row
+def calculate_class_probabilities(summary, row):
+    probabilities = {}
+    total_rows = summary[-2]
+    total_rows = total_rows['amount_analyzed']
+    news_type = summary[-1]
+    news_type = news_type['news_type']
+    for summary_split in summary:
+        for key in summary_split.keys():
+            #probabilities[news_type] = sum
+    pass
+
+
 
 def get_dict(mean_value, stdev_value, column_name):
     dictionary_values = {}
@@ -92,6 +106,15 @@ true_news_dataset = load_dataset(path, True)
 dataset = dataset_union(fake_news_dataset, true_news_dataset)
 
 fake_news_dataset = fake_news_dataset.drop('file_name', axis=1)
-summary = summarize_dataset(fake_news_dataset)
-print(summary)
-
+fake_news_dataset = fake_news_dataset.drop('news_type', axis=1)
+true_news_dataset = true_news_dataset.drop('file_name', axis = 1)
+true_news_dataset = true_news_dataset.drop('news_type', axis = 1)
+fake_news_summary = summarize_dataset(fake_news_dataset)
+fake_news_summary.append({'news_type': 0})
+true_news_summary = summarize_dataset(true_news_dataset)
+true_news_summary.append({'news_type': 1})
+print("True news summary:")
+print(true_news_summary)
+print("Fake news summary:")
+print(fake_news_summary)
+calculate_class_probabilities(true_news_summary, 5)
