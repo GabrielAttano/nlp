@@ -1,40 +1,18 @@
-# import data_treatment.file_reader as file_reader
-# import data_treatment.data_cleaner as data_cleaner
-# import data_treatment.data_visualizer as data_visualizer
-# import pandas as pd
-# import data_treatment.data_analysis as data_analysis
-# import os
-import pickle
+from data_treatment.file_reader import FileReader
+from data_treatment.file_reader import Directories
+from bag_of_words.features_extractor import FeaturesExtractor
+from bag_of_words.words_extractor import WordsExtractor
+import os
+import nltk
 
-# df = data_visualizer.DataVisualizer.create_dataframe()
-# fake_news_path = 'C:\\Users\\t6w31\\nlp\\Fake.br-Corpus\\full_texts\\fake'
-# pickle_path = 'C:\\Users\\t6w31\\nlp\\pickles'
-# os.chdir(fake_news_path)
-# for i in range(1, 3602):
-#     print("processing text " + str(i) + ".txt")
-#     file_name = str(i) + ".txt"
-#     text = file_reader.FileReader.read_file(file_name)
-#     if text == None:
-#         continue
-#     text = data_cleaner.DataCleaner.text_normalization(text)
-#     text = data_cleaner.DataCleaner.remove_stopwords(text)
-#     text = data_cleaner.DataCleaner.lemmatization(text)
-#     dictionary_data = data_visualizer.DataVisualizer.get_info(text)
-#     dictionary_data["file_name"] = file_name
-#     df = data_visualizer.DataVisualizer.df_append(dictionary_data, df)
+trainingFeatures = FeaturesExtractor(True, file="normalized_features_list", total = 5)
+print("started training")
+classifier = nltk.NaiveBayesClassifier.train(trainingFeatures.features)
+print("finished training")
 
-# print(df)
-# os.chdir(pickle_path)
-# df.to_pickle('true_news.pkl')
+testFeatures = FeaturesExtractor(True, file="normalized_features_list10.pkl")
+print(testFeatures.features[19])
+result = classifier.prob_classify(testFeatures.features[19][0])
+for key in result.samples():
+    print(key, result.prob(key))
 
-with open("fake_news_sentences.pkl", "rb") as file:
-    list = pickle.load(file)
-
-for sentences in list:
-    for sentence in sentences["sentences"]:
-        if sentence == "vai te catar senadora!":
-            print("achou!")
-
-
-# df = pd.read_pickle('fake_news.pkl')
-# print(df)

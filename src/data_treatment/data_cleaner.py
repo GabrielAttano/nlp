@@ -64,3 +64,11 @@ class DataCleaner:
             lemma_text += ' '
             
         return lemma_text
+
+    @classmethod
+    def process_text(cls, text: str):
+        clean_text = cls.text_normalization(text)
+        clean_text = cls.remove_stopwords(clean_text)
+        clean_text = cls.lemmatization(clean_text)
+        return clean_text
+

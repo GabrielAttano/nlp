@@ -64,7 +64,6 @@ class DataAnalysis:
     def word_frequency(cls, text):
         '''returns a sorted (descending) dictionary, where the keys are the words and the values
         the frequency of such words in the text'''
-        # creating a dictionary with the frequency of the words
         frequency = {}
         words = text.split()
         for word in words:
